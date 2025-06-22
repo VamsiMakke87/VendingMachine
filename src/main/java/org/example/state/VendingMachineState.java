@@ -1,14 +1,20 @@
 package org.example.state;
 
+import org.example.currency.Coin;
+import org.example.currency.Note;
+import org.example.model.Product;
+
 public interface VendingMachineState {
 
-    public void selectProduct(Pr);
+    public void selectProduct(Product productName, int quantity);
 
-    public void insertCoin();
+    public void insertCoin(Coin coin);
 
-    public void insertNote();
+    public void insertNote(Note note);
 
-    public void dispenseProduct();
+    public void payWithCard();
+
+    public void dispenseProduct(Product product);
 
     public void returnChange();
 

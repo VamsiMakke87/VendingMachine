@@ -6,16 +6,16 @@ import org.example.currency.Note;
 import org.example.model.Product;
 import org.example.state.VendingMachineState;
 
-public class IdleState implements VendingMachineState {
+public class ReturnChangeState implements VendingMachineState {
 
     private VendingMachine vendingMachine;
-    public IdleState(VendingMachine vendingMachine){
+    public ReturnChangeState(VendingMachine vendingMachine){
         this.vendingMachine=vendingMachine;
     }
     @Override
-    public void selectProduct(Product product) {
+    public void selectProduct(Product productName, int quantity) {
 
-        System.out.println(product.getName()+" selected, Pirce: "+ product.getPrice());
+        System.out.println(productName.getName()+" selected, Pirce: "+ productName.getPrice());
     }
 
     @Override
@@ -25,6 +25,11 @@ public class IdleState implements VendingMachineState {
 
     @Override
     public void insertNote(Note note) {
+
+    }
+
+    @Override
+    public void payWithCard() {
 
     }
 

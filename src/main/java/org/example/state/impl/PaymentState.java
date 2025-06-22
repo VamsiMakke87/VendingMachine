@@ -5,17 +5,32 @@ import org.example.currency.Coin;
 import org.example.currency.Note;
 import org.example.model.Product;
 import org.example.state.VendingMachineState;
+import org.example.strategy.payment.PaymentStrategy;
 
-public class ReadyState implements VendingMachineState {
+public class PaymentState implements VendingMachineState {
+
+    private PaymentStrategy paymentStrategy;
+
+    @Override
+    public void payWithCard() {
+        System.out.println("Some card payment handling logic");
+        double remainingAmount=vendingMachine.getRemainingAmount();
+        vendingMachine.setAmountPaid(remainingAmount);
+        System.out.println("Amount paid:"+ remainingAmount);
+    }
+
+    public PaymentState(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
 
     private VendingMachine vendingMachine;
-    public ReadyState(VendingMachine vendingMachine){
+    public PaymentState(VendingMachine vendingMachine){
         this.vendingMachine=vendingMachine;
     }
     @Override
-    public void selectProduct(Product product) {
+    public void selectProduct(Product productName, int quantity) {
 
-        System.out.println(product.getName()+" selected, Pirce: "+ product.getPrice());
+        System.out.println("Product: "+ productName +" is already selected, please pay amount:"+quantity );
     }
 
     @Override

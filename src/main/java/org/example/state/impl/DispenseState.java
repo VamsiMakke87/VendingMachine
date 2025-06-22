@@ -6,16 +6,22 @@ import org.example.currency.Note;
 import org.example.model.Product;
 import org.example.state.VendingMachineState;
 
-public class IdleState implements VendingMachineState {
+public class DispenseState implements VendingMachineState {
 
     private VendingMachine vendingMachine;
-    public IdleState(VendingMachine vendingMachine){
+
+    @Override
+    public void payWithCard() {
+
+    }
+
+    public DispenseState(VendingMachine vendingMachine){
         this.vendingMachine=vendingMachine;
     }
     @Override
-    public void selectProduct(Product product) {
+    public void selectProduct(Product productName, int quantity) {
 
-        System.out.println(product.getName()+" selected, Pirce: "+ product.getPrice());
+        System.out.println(productName.getName()+" selected, Pirce: "+ productName.getPrice());
     }
 
     @Override
