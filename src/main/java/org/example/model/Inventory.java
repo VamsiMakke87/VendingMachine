@@ -1,19 +1,22 @@
 package org.example.model;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Inventory {
 
+    private Map<String,Product> productMap;
     private Map<Product, Integer> productInventory;
 
-    private Inventory instance;
+    private static Inventory instance;
 
     private Inventory() {
-        productInventory = new LinkedHashMap<>();
+        productInventory = new HashMap<>();
+        productMap= new HashMap<>();
     }
 
-    public synchronized Inventory getInstance() {
+    public static synchronized Inventory getInstance() {
         if (instance == null) {
             instance = new Inventory();
         }
@@ -21,6 +24,7 @@ public class Inventory {
     }
 
     public void addProduct(Product product, int quantity) {
+        productMap.put(product.getName().toLowerCase(),product);
         productInventory.put(product, productInventory.getOrDefault(product, 0) + quantity);
     }
 
@@ -36,5 +40,16 @@ public class Inventory {
         productInventory.put(product,productInventory.get(product)-quantity);
     }
 
+    public  void removeProduct(Product product){
+        productInventory.remove(product);
+    }
+
+    public boolean contains(String productName){
+        return productMap.containsKey(productName);
+    }
+
+    public Product getProductByName(String productName){
+        return productMap.getOrDefault(productName,null);
+    }
 
 }
