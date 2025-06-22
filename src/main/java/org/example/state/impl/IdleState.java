@@ -15,9 +15,15 @@ public class IdleState implements VendingMachineState {
     }
 
     @Override
+    public void cancelRequest() {
+
+    }
+
+    @Override
     public void selectProduct(Product product, int quantity) {
         vendingMachine.setSelectedProduct(product);
         vendingMachine.setSelectedQuantity(quantity);
+        vendingMachine.setVendingMachineState(vendingMachine.getPaymentState());
     }
 
     @Override

@@ -18,4 +18,6 @@ public interface VendingMachineState {
 
     public void returnChange();
 
+    public void cancelRequest();
+
 }

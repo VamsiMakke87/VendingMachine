@@ -29,6 +29,11 @@ public class ReturnChangeState implements VendingMachineState {
     }
 
     @Override
+    public void cancelRequest() {
+
+    }
+
+    @Override
     public void payWithCard() {
 
     }

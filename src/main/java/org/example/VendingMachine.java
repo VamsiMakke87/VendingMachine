@@ -12,7 +12,7 @@ public class VendingMachine {
 
     private static VendingMachine instance;
     private IdleState idleState;
-    private PaymentState readyState;
+    private PaymentState paymentState;
     private DispenseState dispenseState;
     private ReturnChangeState returnChangeState;
 
@@ -32,7 +32,7 @@ public class VendingMachine {
         amountPaid = 0;
         inventory = Inventory.getInstance();
         idleState = new IdleState(this);
-        readyState = new PaymentState(this);
+        paymentState = new PaymentState(this);
         dispenseState = new DispenseState(this);
         returnChangeState = new ReturnChangeState(this);
         setVendingMachineState(idleState);
@@ -53,8 +53,8 @@ public class VendingMachine {
         return idleState;
     }
 
-    public PaymentState getReadyState() {
-        return readyState;
+    public PaymentState getPaymentState() {
+        return paymentState;
     }
 
     public DispenseState getDispenseState() {

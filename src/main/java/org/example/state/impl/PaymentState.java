@@ -45,11 +45,16 @@ public class PaymentState implements VendingMachineState {
 
     @Override
     public void dispenseProduct(Product product) {
+        System.out.println("Please complete the payment first!");
+    }
+
+    @Override
+    public void cancelRequest() {
 
     }
 
     @Override
     public void returnChange() {
-
+        System.out.println("Please complete the payment first!");
     }
 }

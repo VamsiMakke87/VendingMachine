@@ -11,6 +11,11 @@ public class DispenseState implements VendingMachineState {
     private VendingMachine vendingMachine;
 
     @Override
+    public void cancelRequest() {
+
+    }
+
+    @Override
     public void payWithCard() {
 
     }
