@@ -1,7 +1,7 @@
 package org.example.strategy.payment;
 
-public class CashPaymentStrategy extends PaymentStrategy {
-    public CashPaymentStrategy(double totalPayment) {
+public class CardPaymentStrategy extends PaymentStrategy{
+    public CardPaymentStrategy(double totalPayment) {
         super(totalPayment);
     }
 
