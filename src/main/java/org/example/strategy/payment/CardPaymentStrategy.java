@@ -1,12 +1,11 @@
 package org.example.strategy.payment;
 
-public class CardPaymentStrategy extends PaymentStrategy{
-    public CardPaymentStrategy(double totalPayment) {
-        super(totalPayment);
-    }
-
+public class CardPaymentStrategy implements PaymentStrategy{
     @Override
-    public void pay(double amount) {
+    public boolean pay(double amount) {
+        // some card payment logic
+        System.out.println(amount+ " paid through card");
 
+        return  true;
     }
 }

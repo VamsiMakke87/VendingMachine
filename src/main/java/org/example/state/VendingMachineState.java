@@ -12,9 +12,9 @@ public interface VendingMachineState {
 
     public void insertNote(Note note);
 
-    public void payWithCard();
+    public void payWithCard(double amount);
 
-    public void dispenseProduct(Product product);
+    public void dispenseProduct(Product product,int quantity);
 
     public void returnChange();
 

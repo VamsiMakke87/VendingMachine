@@ -16,7 +16,7 @@ public class IdleState implements VendingMachineState {
 
     @Override
     public void cancelRequest() {
-
+        vendingMachine.setVendingMachineState(vendingMachine.getIdleState());
     }
 
     @Override
@@ -27,7 +27,7 @@ public class IdleState implements VendingMachineState {
     }
 
     @Override
-    public void payWithCard() {
+    public void payWithCard(double amount) {
         System.out.println("Please select a product first");
     }
 
@@ -42,7 +42,7 @@ public class IdleState implements VendingMachineState {
     }
 
     @Override
-    public void dispenseProduct(Product product) {
+    public void dispenseProduct(Product product, int quantity) {
         System.out.println("Please select a product first");
     }
 

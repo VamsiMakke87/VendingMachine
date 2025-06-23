@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.currency.Coin;
+import org.example.currency.Note;
 import org.example.model.Inventory;
 import org.example.model.Product;
 import org.example.state.VendingMachineState;
@@ -8,7 +10,7 @@ import org.example.state.impl.IdleState;
 import org.example.state.impl.PaymentState;
 import org.example.state.impl.ReturnChangeState;
 
-public class VendingMachine {
+public class VendingMachine{
 
     private static VendingMachine instance;
     private IdleState idleState;
@@ -20,11 +22,14 @@ public class VendingMachine {
 
     private double amountPaid;
 
+    private double totalAmount;
     private double remainingAmount;
+    private double amountToBeRefunded;
 
     private Inventory inventory;
 
     private Product selectedProduct;
+
 
     private int selectedQuantity;
 
@@ -65,6 +70,10 @@ public class VendingMachine {
         return returnChangeState;
     }
 
+    public VendingMachineState getVendingMachineState() {
+        return vendingMachineState;
+    }
+
     public synchronized double getAmountPaid() {
         return amountPaid;
     }
@@ -72,7 +81,7 @@ public class VendingMachine {
     // synchronized to handle cases when muliple currency denominations like Coin and Note is inserted
     public synchronized void setAmountPaid(double amountPaid) {
         this.amountPaid += amountPaid;
-        setRemainingAmount(amountPaid);
+        setRemainingAmount();
         printPaymentStatus();
     }
 
@@ -90,15 +99,19 @@ public class VendingMachine {
     }
 
     public void setSelectedQuantity(int selectedQuantity) {
-        this.selectedQuantity = Math.min(1, selectedQuantity); // Atleast one quantity is selected
+        this.selectedQuantity = Math.max(1, selectedQuantity); // Atleast one quantity is selected
+        totalAmount = selectedProduct.getPrice() * selectedQuantity;
         setAmountPaid(0);
-        setRemainingAmount(selectedProduct.getPrice() * selectedQuantity);
     }
 
     public void selectProduct(String productName, int quantity) {
-        Product product = inventory.getProductByName(productName);
+        Product product = inventory.getProductByName(productName.toUpperCase());
         if (product != null) {
-            vendingMachineState.selectProduct(product, quantity);
+            if (inventory.hasStock(product, quantity)) {
+                vendingMachineState.selectProduct(product, quantity);
+            } else {
+                System.out.println("The vending machine currently has only " + inventory.getQuantity(product) + " units of " + productName + " available.");
+            }
         } else {
             System.out.println("Product do not exist");
         }
@@ -108,15 +121,58 @@ public class VendingMachine {
         return remainingAmount;
     }
 
-    private synchronized void setRemainingAmount(double amount) {
-        remainingAmount -= amount;
+    private synchronized void setRemainingAmount() {
+        remainingAmount = totalAmount - amountPaid;
+        double roundedRemainingAmount = Math.round(remainingAmount * 100.0) / 100.0;
+        remainingAmount=roundedRemainingAmount;
+    }
+
+    public double getAmountToBeRefunded() {
+        return amountToBeRefunded;
+    }
+
+    public void setAmountToBeRefunded(double amountToBeRefunded) {
+        this.amountToBeRefunded = amountToBeRefunded;
+        System.out.println("Amount to be refunded:" + amountToBeRefunded);
     }
 
     public void printPaymentStatus() {
+        System.out.println("-------------------------------------------------");
         System.out.println("Product: " + selectedProduct.getName());
         System.out.println("Quantity: " + selectedQuantity);
-        System.out.println("Total Amount: " + selectedProduct.getPrice() * selectedQuantity);
-        System.out.println("Amount Paid: " + amountPaid);
-        System.out.println("Remaining Amount: " + remainingAmount);
+        System.out.println("Total Amount: $" + totalAmount);
+        System.out.println("Amount Paid: $" + amountPaid);
+        System.out.println("Remaining Amount: $" + remainingAmount);
+        System.out.println("-------------------------------------------------");
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void insertCoin(Coin coin) {
+        vendingMachineState.insertCoin(coin);
+    }
+
+    public void insertNote(Note note) {
+        vendingMachineState.insertNote(note);
+    }
+
+    public void payWithCard(double amount) {
+        vendingMachineState.payWithCard(amount);
+    }
+
+    public void cancelRequest(){
+        vendingMachineState.cancelRequest();
+    }
+
+    public void clear(){
+        selectedProduct=null;
+        totalAmount=0;
+        selectedQuantity=0;
+        amountPaid=0;
+        remainingAmount=0;
+        amountToBeRefunded=0;
+        vendingMachineState=idleState;
     }
 }
